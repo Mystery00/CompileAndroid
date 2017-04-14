@@ -17,7 +17,7 @@ git config --global user.email "mystery0dyl520@gmail.com"
 git config --global user.name "Mystery0"
 repo init -u git://github.com/LineageOS/android.git -b cm-14.1
 repo sync -f --force-sync --no-clone-bundle
-~/LineageOS/build/envsetup.sh
+source ~/LineageOS/build/envsetup.sh
 export USE_CCACHE=1
 ~/LineageOS/prebuilts/misc/linux-x86/ccache/ccache -M 50G
 export CCACHE_COMPRESS=1
