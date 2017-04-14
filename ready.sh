@@ -23,9 +23,3 @@ export USE_CCACHE=1
 export CCACHE_COMPRESS=1
 export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8G"
 source build/envsetup.sh
-
-breakfast shamu
-vim ~/LineageOS/.repo/local_manifests/roomservice.xml
-
-<project name="TheMuppets/proprietary_vendor_motorola"  path="vendor/motorola"  remote="github" revision="cm-14.1" />
-<project name="TheMuppets/proprietary_vendor_xiaomi"  path="vendor/xiaomi"  remote="github" revision="cm-14.1" /> 
