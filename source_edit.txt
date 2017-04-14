@@ -1,0 +1,15 @@
+/frameworks/base/packages/SystemUI
+	vpn icon
+
+/frameworks/base/core/res/res/values/themes.xml themes_material.xml
+	statusBarColor------?attr/colorPrimaryDark
+	navigationBarColor-----?attr/colorPrimaryDark
+			config.xml
+	config_sustainedPerformanceModeSupported
+	config_useRoundIcon
+
+/framework/base/packages/SystemUI
+	网速显示----Traffic.java---layout
+
+sub主题取消--等待官方
+
