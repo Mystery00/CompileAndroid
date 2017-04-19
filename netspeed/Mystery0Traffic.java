@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 
+import com.android.systemui.R;
+
 public class Mystery0Traffic extends LinearLayout
 {
     private TextView send;
@@ -29,6 +31,7 @@ public class Mystery0Traffic extends LinearLayout
     private final BroadcastReceiver mIntentReceiver;
     Runnable mRunnable;
     Handler mTrafficHandler;
+    TrafficStats mTrafficStats;
     boolean showTraffic;
     float send_speed;
     float received_speed;
@@ -55,6 +58,7 @@ public class Mystery0Traffic extends LinearLayout
         mIntentReceiver = new Mystery0Traffic.Receiver();
         mRunnable = new Mystery0Traffic.Task();    // Some crazy single-line gymnastics to compensate for the smali modifications, which probably also explains why both classes are nameless (they aren't originally instantiated here)
         mHandler = new Handler();
+        mTrafficStats = new TrafficStats();
         Mystery0Traffic.SettingsObserver settingsObserver = new Mystery0Traffic.SettingsObserver(mHandler);
         settingsObserver.observe();
         updateSettings();
