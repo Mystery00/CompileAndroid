@@ -25,7 +25,6 @@ public class Mystery0Traffic extends LinearLayout
 {
     private TextView send;
     private TextView received;
-
     private boolean mAttached;
     Handler mHandler;
     private final BroadcastReceiver mIntentReceiver;
@@ -56,9 +55,9 @@ public class Mystery0Traffic extends LinearLayout
         send = (TextView) findViewById(R.id.send);
         received = (TextView) findViewById(R.id.received);
         mIntentReceiver = new Mystery0Traffic.Receiver();
-        mRunnable = new Mystery0Traffic.Task();    // Some crazy single-line gymnastics to compensate for the smali modifications, which probably also explains why both classes are nameless (they aren't originally instantiated here)
+        mRunnable = new Mystery0Traffic.Task();
         mHandler = new Handler();
-        mTrafficStats = new TrafficStats();
+        mTrafficStats=new TrafficStats();
         Mystery0Traffic.SettingsObserver settingsObserver = new Mystery0Traffic.SettingsObserver(mHandler);
         settingsObserver.observe();
         updateSettings();
@@ -147,10 +146,10 @@ public class Mystery0Traffic extends LinearLayout
             @Override
             public void handleMessage(Message msg)
             {
-                send_speed = ((float) (TrafficStats.getTotalTxBytes()) - totalTxBytes) / 1024.0f / 3.0f;
-                received_speed = ((float) (TrafficStats.getTotalRxBytes()) - totalRxBytes) / 1024.0f / 3.0f;
-                totalRxBytes = (float) (TrafficStats.getTotalRxBytes());
-                totalTxBytes = (float) (TrafficStats.getTotalTxBytes());
+                send_speed = ((float) (mTrafficStats.getTotalTxBytes()) - totalTxBytes) / 1024.0f / 3.0f;
+                received_speed = ((float) (mTrafficStats.getTotalRxBytes()) - totalRxBytes) / 1024.0f / 3.0f;
+                totalRxBytes = (float) (mTrafficStats.getTotalRxBytes());
+                totalTxBytes = (float) (mTrafficStats.getTotalTxBytes());
                 DecimalFormat DecimalFormalism = new DecimalFormat("###0");
                 if ((send_speed / 1024.0f) >= 1.0f)
                     send.setText(DecimalFormalism.format((double) (send_speed / 1024.0f)) + "MB/s ↑");
@@ -170,7 +169,6 @@ public class Mystery0Traffic extends LinearLayout
                 super.handleMessage(msg);
             }
         };
-        totalRxBytes = (float) TrafficStats.getTotalRxBytes();
         mTrafficHandler.sendEmptyMessage(0);
     }
 
@@ -190,7 +188,7 @@ public class Mystery0Traffic extends LinearLayout
     public void update()
     {
         mTrafficHandler.removeCallbacks(mRunnable);
-        mTrafficHandler.postDelayed(mRunnable, 2000);
+        mTrafficHandler.postDelayed(mRunnable, 1000);
     }
 
     class Task implements Runnable
@@ -202,3 +200,4 @@ public class Mystery0Traffic extends LinearLayout
         }
     }
 }
+

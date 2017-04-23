@@ -8,6 +8,11 @@ themes.xml themes_material.xml
 	navigationBarColor-----?attr/colorPrimaryDark
 
 	
-onfig.xml
+config.xml
 	config_sustainedPerformanceModeSupported
 	config_useRoundIcon
+
+	
+<com.android.systemui.statusbar.policy.Mystery0Traffic 
+android:layout_width="wrap_content" 
+android:layout_height="fill_parent" />
