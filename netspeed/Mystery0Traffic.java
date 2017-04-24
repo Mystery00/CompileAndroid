@@ -150,7 +150,7 @@ public class Mystery0Traffic extends LinearLayout
                 received_speed = ((float) (mTrafficStats.getTotalRxBytes()) - totalRxBytes) / 1024.0f / 3.0f;
                 totalRxBytes = (float) (mTrafficStats.getTotalRxBytes());
                 totalTxBytes = (float) (mTrafficStats.getTotalTxBytes());
-                DecimalFormat DecimalFormalism = new DecimalFormat("###0");
+                DecimalFormat DecimalFormalism = new DecimalFormat("###0.0");
                 if ((send_speed / 1024.0f) >= 1.0f)
                     send.setText(DecimalFormalism.format((double) (send_speed / 1024.0f)) + "MB/s ↑");
                 else if (send_speed <= 0.0099)
