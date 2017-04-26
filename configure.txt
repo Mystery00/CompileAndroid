@@ -33,3 +33,9 @@ frameworks/base/packages/SettingsProvider/res/values/defaults.xml中定义
 loadSystemSettings()方法中加入新字段的添加代码
 loadBooleanSetting(stmt, Settings.System.NETWORK_SETTINGS, R.bool.def_network_enable);
 
+编译命令：
+source build/envsetup.sh
+croot
+brunch shamu
+brunch armani
+
