@@ -1,5 +1,8 @@
 package com.android.systemui.statusbar.policy;
 
+import java.text.DecimalFormat;
+
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -12,19 +15,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.text.DecimalFormat;
 
 import com.android.systemui.R;
 
-public class Mystery0Traffic extends LinearLayout
+public class Mystery0Traffic extends TextView
 {
-    private TextView send;
-    private TextView received;
     private boolean mAttached;
     Handler mHandler;
     private final BroadcastReceiver mIntentReceiver;
@@ -37,6 +34,25 @@ public class Mystery0Traffic extends LinearLayout
     float totalRxBytes;
     float totalTxBytes;
 
+    class SettingsObserver extends ContentObserver
+    {
+        SettingsObserver(Handler handler)
+        {
+            super(handler);
+        }
+
+        void observe()
+        {
+            ContentResolver resolver = getContext().getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(Settings.ACTION_NETWORK_SETTINGS), false, this);
+
+        }
+        @Override
+        public void onChange(boolean selfChange)
+        {
+            updateSettings();
+        }
+    }
 
     public Mystery0Traffic(Context context)
     {
@@ -51,37 +67,13 @@ public class Mystery0Traffic extends LinearLayout
     public Mystery0Traffic(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
-        LayoutInflater.from(context).inflate(R.layout.mystery0_traffic, this);
-        send = (TextView) findViewById(R.id.send);
-        received = (TextView) findViewById(R.id.received);
-        mIntentReceiver = new Mystery0Traffic.Receiver();
-        mRunnable = new Mystery0Traffic.Task();
+        mIntentReceiver = new Receiver();
+        mRunnable = new Task();
         mHandler = new Handler();
-        mTrafficStats=new TrafficStats();
-        Mystery0Traffic.SettingsObserver settingsObserver = new Mystery0Traffic.SettingsObserver(mHandler);
+        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
+        mTrafficStats = new TrafficStats();
         settingsObserver.observe();
         updateSettings();
-    }
-
-    class SettingsObserver extends ContentObserver
-    {
-        SettingsObserver(Handler handler)
-        {
-            super(handler);
-        }
-
-        void observe()
-        {
-            ContentResolver resolver = getContext().getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor("status_bar_traffic"), false, this);
-
-        }
-
-        @Override
-        public void onChange(boolean selfChange)
-        {
-            updateSettings();
-        }
     }
 
     @Override
@@ -93,7 +85,7 @@ public class Mystery0Traffic extends LinearLayout
         {
             mAttached = true;
             IntentFilter filter = new IntentFilter();
-            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             getContext().registerReceiver(mIntentReceiver, filter, null, getHandler());
         }
         updateSettings();
@@ -110,35 +102,20 @@ public class Mystery0Traffic extends LinearLayout
         }
     }
 
-    private void updateSettings()
-    {
-        ContentResolver resolver = getContext().getContentResolver();
-
-        showTraffic = (Settings.System.getInt(resolver, "status_bar_traffic", 1) == 1);
-
-        if (showTraffic && getConnectAvailable())
-        {
-            if (mAttached)
-                updateTraffic();
-
-            setVisibility(View.VISIBLE);
-        } else
-            setVisibility(View.GONE);
-    }
-
     class Receiver extends BroadcastReceiver
     {
         @Override
         public void onReceive(Context context, Intent intent)
         {
             String action = intent.getAction();
-            if (action.equals("android.net.conn.CONNECTIVITY_CHANGE"))
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION))
             {
                 updateSettings();
             }
         }
     }
 
+    @SuppressLint("HandlerLeak")
     public void updateTraffic()
     {
         mTrafficHandler = new Handler()
@@ -146,25 +123,28 @@ public class Mystery0Traffic extends LinearLayout
             @Override
             public void handleMessage(Message msg)
             {
-                send_speed = ((float) (mTrafficStats.getTotalTxBytes()) - totalTxBytes) / 1024.0f / 3.0f;
-                received_speed = ((float) (mTrafficStats.getTotalRxBytes()) - totalRxBytes) / 1024.0f / 3.0f;
-                totalRxBytes = (float) (mTrafficStats.getTotalRxBytes());
-                totalTxBytes = (float) (mTrafficStats.getTotalTxBytes());
-                DecimalFormat DecimalFormalism = new DecimalFormat("###0.0");
+                send_speed = ((float) (TrafficStats.getTotalTxBytes()) - totalTxBytes) / 1024.0f / 3.0f;
+                received_speed = ((float) (TrafficStats.getTotalRxBytes()) - totalRxBytes) / 1024.0f / 3.0f;
+                totalRxBytes = (float) (TrafficStats.getTotalRxBytes());
+                totalTxBytes = (float) (TrafficStats.getTotalTxBytes());
+                DecimalFormat DecimalFormalism = new DecimalFormat("##0.#");
+                String show_send;
+                String show_received;
                 if ((send_speed / 1024.0f) >= 1.0f)
-                    send.setText(DecimalFormalism.format((double) (send_speed / 1024.0f)) + "MB/s ↑");
+                    show_send=DecimalFormalism.format((double) (send_speed / 1024.0f)) + "MB/s ↑";
                 else if (send_speed <= 0.0099)
-                    send.setText(DecimalFormalism.format((double) (send_speed * 1024.0f)) + "B/s ↑");
+                    show_send=DecimalFormalism.format((double) (send_speed * 1024.0f)) + "B/s ↑";
                 else
-                    send.setText(DecimalFormalism.format((double) send_speed) + "KB/s ↑");
+                    show_send=DecimalFormalism.format((double) send_speed) + "KB/s ↑";
 
                 if ((received_speed / 1024.0f) >= 1.0f)
-                    received.setText(DecimalFormalism.format((double) (received_speed / 1024.0f)) + "MB/s ↓");
+                    show_received=DecimalFormalism.format((double) (received_speed / 1024.0f)) + "MB/s ↓";
                 else if (send_speed <= 0.0099)
-                    received.setText(DecimalFormalism.format((double) (received_speed * 1024.0f)) + "B/s ↓");
+                    show_received=DecimalFormalism.format((double) (received_speed * 1024.0f)) + "B/s ↓";
                 else
-                    received.setText(DecimalFormalism.format((double) received_speed) + "KB/s ↓");
+                    show_received=DecimalFormalism.format((double) received_speed) + "KB/s ↓";
 
+                setText(show_send + " " + show_received);
                 update();
                 super.handleMessage(msg);
             }
@@ -178,7 +158,7 @@ public class Mystery0Traffic extends LinearLayout
         {
             ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             return connectivityManager.getActiveNetworkInfo().isConnected();
-        } catch (Exception e)
+        } catch (Exception ignored)
         {
         }
 
@@ -198,6 +178,22 @@ public class Mystery0Traffic extends LinearLayout
         {
             mTrafficHandler.sendEmptyMessage(0);
         }
+    }
+
+    private void updateSettings()
+    {
+        ContentResolver resolver = getContext().getContentResolver();
+
+        showTraffic = (Settings.System.getInt(resolver, Settings.ACTION_NETWORK_SETTINGS, 1) == 1);
+
+        if (showTraffic && getConnectAvailable())
+        {
+            if (mAttached)
+                updateTraffic();
+
+            setVisibility(View.VISIBLE);
+        } else
+            setVisibility(View.GONE);
     }
 }
 

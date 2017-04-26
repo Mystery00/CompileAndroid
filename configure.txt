@@ -14,6 +14,22 @@ config.xml
 
 	
 <com.android.systemui.statusbar.policy.Mystery0Traffic 
-android:layout_width="wrap_content" 
-android:layout_gravity="center_vertical"
-android:layout_height="match_parent" />
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:textAppearance="@android:style/TextAppearance.StatusBar.Icon"
+android:textSize="16sp"
+android:textStyle="normal" />
+
+network settings
+/frameworks/base/core/Java/android/provider/Settings.java中添加
+@SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_NETWORK_SETTINGS =
+            "android.settings.NETWORK_SETTINGS";
+
+frameworks/base/packages/SettingsProvider/res/values/defaults.xml中定义
+<bool name="def_network_enable">true</bool>
+
+在frameworks/base/packages/SettingsProvider/src/com/android/providers/settings/DatabaseHelper.java中
+loadSystemSettings()方法中加入新字段的添加代码
+loadBooleanSetting(stmt, Settings.System.NETWORK_SETTINGS, R.bool.def_network_enable);
+
