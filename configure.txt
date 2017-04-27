@@ -1,4 +1,4 @@
-roomservice.xml
+﻿roomservice.xml
 <project name="TheMuppets/proprietary_vendor_motorola"  path="vendor/motorola"  remote="github" revision="cm-14.1" />
 <project name="TheMuppets/proprietary_vendor_xiaomi"  path="vendor/xiaomi"  remote="github" revision="cm-14.1" />
 
@@ -39,3 +39,4 @@ croot
 brunch shamu
 brunch armani
 
+http://***/lineage-14.1-***-UNOFFICIAL-shamu.zip
