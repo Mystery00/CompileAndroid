@@ -44,7 +44,7 @@ public class Mystery0Traffic extends TextView
         void observe()
         {
             ContentResolver resolver = getContext().getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(Settings.ACTION_NETWORK_SETTINGS), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor("Settings.ACTION_NETWORK_SETTINGS"), false, this);
 
         }
         @Override
@@ -184,7 +184,7 @@ public class Mystery0Traffic extends TextView
     {
         ContentResolver resolver = getContext().getContentResolver();
 
-        showTraffic = (Settings.System.getInt(resolver, Settings.ACTION_NETWORK_SETTINGS, 1) == 1);
+        showTraffic = (Settings.System.getInt(resolver, "Settings.ACTION_NETWORK_SETTINGS", 1) == 1);
 
         if (showTraffic && getConnectAvailable())
         {
