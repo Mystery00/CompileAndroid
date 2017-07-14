@@ -7,31 +7,50 @@ themes.xml themes_material.xml
 	statusBarColor------?attr/colorPrimaryDark
 	navigationBarColor-----?attr/colorPrimaryDark
 
-	
+
 config.xml
 	config_sustainedPerformanceModeSupported
 	config_useRoundIcon
 
-	
-<com.android.systemui.statusbar.policy.Mystery0Traffic 
+
+<com.android.systemui.statusbar.policy.Mystery0Traffic
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:textAppearance="@android:style/TextAppearance.StatusBar.Icon"
 android:textSize="12sp"
 android:textStyle="normal" />
 
-network settings
-/frameworks/base/core/Java/android/provider/Settings.java中添加
-@SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)
-    public static final String ACTION_NETWORK_SETTINGS =
-            "android.settings.NETWORK_SETTINGS";
+dimens.xml
+<dimen name="halo_inner_radius">10.0dip</dimen>
+<dimen name="halo_thickness">1.0dip</dimen>
+<dimen name="halo_diameter">22.0dip</dimen>
+<dimen name="opa_dot_diam">10.0dip</dimen>
+<dimen name="opa_diamond_translation">16.0dip</dimen>
+<dimen name="opa_line_y_translation">16.0dip</dimen>
+<dimen name="opa_line_x_trans_ry">15.0dip</dimen>
+<dimen name="opa_line_x_trans_bg">30.0dip</dimen>
+<dimen name="opa_line_x_collapse_bg">46.0dip</dimen>
+<dimen name="opa_line_x_collapse_ry">15.0dip</dimen>
+<dimen name="opa_overshoot_translation">8.0dip</dimen>
+<dimen name="opa_return_translation">-1.0dip</dimen>
+<dimen name="opa_rest_to_collapse">7.0dip</dimen>
 
-frameworks/base/packages/SettingsProvider/res/values/defaults.xml中定义
-<bool name="def_network_enable">true</bool>
+id.xml
+<item type="id" name="red">false</item>
+<item type="id" name="blue">false</item>
+<item type="id" name="green">false</item>
+<item type="id" name="yellow">false</item>
+<item type="id" name="white">false</item>
+<item type="id" name="home_button">false</item>
+<item type="id" name="halo">false</item>
 
-在frameworks/base/packages/SettingsProvider/src/com/android/providers/settings/DatabaseHelper.java中
-loadSystemSettings()方法中加入新字段的添加代码
-loadBooleanSetting(stmt, Settings.System.NETWORK_SETTINGS, R.bool.def_network_enable);
+styles.xml
+<style name="DotStyle">
+<item name="android:layout_width">wrap_content</item>
+<item name="android:layout_height">wrap_content</item>
+<item name="android:layout_centerHorizontal">true</item>
+<item name="android:layout_centerVertical">true</item>
+</style>
 
 编译命令：
 source build/envsetup.sh

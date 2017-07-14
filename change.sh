@@ -5,3 +5,8 @@ cp fonts/DroidSansMono.ttf ~/LineageOS/frameworks/base/data/fonts/DroidSansMono.
 cp netspeed/Mystery0Traffic.java ~/LineageOS/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/policy/
 cp SystemUI/drawable/stat_sys_vpn_ic.xml ~/LineageOS/frameworks/base/packages/SystemUI/res/drawable/
 cp SystemUI/drawable-xxxhdpi/* ~/LineageOS/frameworks/base/packages/SystemUI/res/drawable-xxxhdpi/
+mkdir ~/LineageOS/frameworks/base/packages/SystemUI/src/com/google
+mkdir ~/LineageOS/frameworks/base/packages/SystemUI/src/com/google/android
+mkdir ~/LineageOS/frameworks/base/packages/SystemUI/src/com/google/android/systemui
+cp SystemUI/src/OpaLayout.java ~/LineageOS/frameworks/base/packages/SystemUI/src/com/google/android/systemui/OpaLayout.java
+cp SystemUI/layout/home.xml ~/LineageOS/frameworks/base/packages/SystemUI/res/layout/home.xml
