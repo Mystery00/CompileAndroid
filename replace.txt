@@ -1,7 +1,0 @@
-/external/noto-fonts/cjk/NotoSansCJK-Regular.ttc
-/external/roboto-fonts/Roboto-Regular.ttf
-/external/roboto-fonts/RobotoCondensed-Regular.ttf
-/frameworks/base/data/fonts/DroidSansMono.ttf
-
-/frameworks/base/packages/SystemUI
-	vpn icon

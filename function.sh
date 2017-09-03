@@ -65,9 +65,9 @@ function setCache()
 
 function importVendor()
 {
-    read codeName
+    read -p "Please enter your device code name: " codeName
     . build/envsetup.sh
-    echo "Start sync device vendor..."
+    echo "Start sync vendor for $codeName...."
     breakfast $codeName
 }
 
@@ -86,12 +86,15 @@ function copyFonts()
 
 function copyNetworkTraffic()
 {
-    case $romType in
-        '1') romName="LineageOS";;
-        '2') romName="RR";;
-    esac
     echo "Copying NetworkTraffic..."
-    cp netspeed/Mystery0Traffic.java ~/$romName/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/policy/
+    case $romType in
+        '1')
+            cp netspeed/Mystery0Traffic.java ~/LineageOS/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/policy/
+        ;;
+        '2')
+            cp netspeed/NetworkTraffic.java ~/LineageOS/frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/policy/
+        ;;
+    esac
 }
 
 function copySystemUI()
@@ -250,5 +253,30 @@ function showMenu()
             esac
             editSourceCode
             showMenu
+        ;;
+        '4')
+            source build/envsetup.sh
+            croot
+            echo "Start compile ..."
+            brunch $codeName
+        ;;
+        '5')
+            case $romType in
+                '1')
+                    romName="LineageOS"
+                    cp ~/$romName/out/target/product/$codeName/lineage-* /var/www/html/
+                ;;
+                '2')
+                    romName="RR"
+                    cp ~/$romName/out/target/product/$codeName/RR-* /var/www/html/
+                ;;
+            esac
+        ;;
+        *)
+            echo "Error input!!!"
+            echo "Any key to reset"
+            read enter
+            showMenu
+        ;;
     esac
 }
