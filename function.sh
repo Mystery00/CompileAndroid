@@ -77,6 +77,7 @@ function importVendor()
     . build/envsetup.sh
     echo "Start sync vendor for $codeName...."
     breakfast $codeName
+    repo sync
 }
 
 function copyFonts()
@@ -114,7 +115,7 @@ function copySystemUI()
     echo "Copying SystemUI..."
     # copy nav icon
     cp SystemUI/drawable-xxxhdpi/* ~/$romName/frameworks/base/packages/SystemUI/res/drawable-xxxhdpi/
-    
+
     if [ $romType -eq '2' ]
     then
         cp SystemUI/drawable/stat_sys_vpn_ic.xml ~/$romName/frameworks/base/packages/SystemUI/res/drawable/
@@ -151,7 +152,7 @@ function editSourceCode()
             vim ~/LineageOS/frameworks/base/packages/SystemUI/res/values/styles.xml
         ;;
         '2')
-            vim ~/LineageOS/.repo/local_manifests/roomservice.xml
+            vim ~/RR/.repo/local_manifests/roomservice.xml
         ;;
     esac
 }
@@ -195,7 +196,7 @@ function showMenu()
             showMenu
         ;;
         '2') #Sync source code
-            if [ $romType -ne "0" ]
+            if [ $romType -ne 0 ]
             then
                 case $romType in
                     '1') romName="LineageOS";;
@@ -203,13 +204,12 @@ function showMenu()
                 esac
                 echo "You choosed $romName, do you want to continue?[Y/n]"
                 read temp
-                echo $temp
-                if [ $temp="n" ]
+                if [ $temp != 'Y' ] || [ $temp != 'y' ]
                 then
                     romType=0
                 fi
             fi
-            if [ $romType -eq "0" ]
+            if [ $romType -eq 0 ]
             then
                 echo "1.LineageOS"
                 echo "2.RR"
@@ -232,7 +232,7 @@ function showMenu()
                 echo "You choosed $romName, do you want to continue?[Y/n]"
                 read temp
                 echo $temp
-                if [ $temp="n" ]
+                if [ $temp != 'Y' ] || [ $temp != 'y' ]
                 then
                     romType=0
                 fi
@@ -280,6 +280,7 @@ function showMenu()
                     cp ~/$romName/out/target/product/$codeName/RR-* /var/www/html/
                 ;;
             esac
+                echo "The name of rom is $romName"
         ;;
         *)
             echo "Error input!!!"
