@@ -39,7 +39,8 @@ function doLineageOS()
 {
     echo "This is script for LineageOS!"
     echo "The latest branch is cm-14.1"
-    mkdir ~/LineageOS && cd ~/LineageOS
+    mkdir ~/LineageOS
+    cd ~/LineageOS
     echo "Please enter which branch?"
     read branch
     repo init -u git://github.com/LineageOS/android.git -b $branch
@@ -52,7 +53,8 @@ function doRR()
 {
     echo "This is script for RR!"
     echo "The latest branch is nougat"
-    mkdir ~/RR && cd ~/RR
+    mkdir ~/RR
+    cd ~/RR
     echo "Please enter which branch?"
     read branch
     repo init -u https://github.com/ResurrectionRemix/platform_manifest.git -b $branch
@@ -217,6 +219,7 @@ function showMenu()
             romType=$choose
             getSource $choose
             importVendor
+            repo sync
             showMenu
         ;;
         '3') #Change the source code
