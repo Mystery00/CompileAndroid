@@ -38,6 +38,7 @@ function getSource()
 function doLineageOS()
 {
     echo "This is script for LineageOS!"
+    echo "The latest branch is cm-14.1"
     mkdir ~/LineageOS && cd ~/LineageOS
     echo "Please enter which branch?"
     read branch
@@ -50,6 +51,7 @@ function doLineageOS()
 function doRR()
 {
     echo "This is script for RR!"
+    echo "The latest branch is nougat"
     mkdir ~/RR && cd ~/RR
     echo "Please enter which branch?"
     read branch
