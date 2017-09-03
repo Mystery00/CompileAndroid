@@ -155,6 +155,8 @@ function editSourceCode()
             vim ~/RR/.repo/local_manifests/roomservice.xml
         ;;
     esac
+    . build/envsetup.sh
+    repo sync
 }
 
 function showMenu()
