@@ -13,7 +13,11 @@ function readyEnvironment()
     make
     make install
     ldconfig /usr/local/lib
-    rm -rf ~/ImageMagick*
+    rm -rf ImageMagick*
+    mkdir ~/bin
+    PATH=~/bin:$PATH
+    curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+    chmod a+x ~/bin/repo
 }
 
 function getSource()
