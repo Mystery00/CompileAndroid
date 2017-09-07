@@ -38,7 +38,7 @@ function getSource()
 function doLineageOS()
 {
     echo "This is script for LineageOS!"
-    echo "The latest branch is cm-14.1"
+    echo "The latest branch is $latestBranchOfLineageOS"
     mkdir ~/LineageOS
     cd ~/LineageOS
     echo "Please enter which branch?"
@@ -52,7 +52,7 @@ function doLineageOS()
 function doRR()
 {
     echo "This is script for RR!"
-    echo "The latest branch is nougat"
+    echo "The latest branch is $latestBranchOfRR"
     mkdir ~/RR
     cd ~/RR
     echo "Please enter which branch?"
@@ -115,7 +115,7 @@ function copySystemUI()
     echo "Copying SystemUI..."
     # copy nav icon
     cp SystemUI/drawable-xxxhdpi/* ~/$romName/frameworks/base/packages/SystemUI/res/drawable-xxxhdpi/
-
+    
     if [ $romType -eq '2' ]
     then
         cp SystemUI/drawable/stat_sys_vpn_ic.xml ~/$romName/frameworks/base/packages/SystemUI/res/drawable/
@@ -153,6 +153,14 @@ function editSourceCode()
         ;;
         '2')
             vim ~/RR/.repo/local_manifests/roomservice.xml
+            echo "Do you want to edit traffic layout of statusbar?[y/N]"
+            read temp
+            if [ -r $temp ]; then
+                return
+            fi
+            if [ $temp = 'y' ] || [ $temp = 'Y' ]; then
+                vim ~/RR/frameworks/base/packages/SystemUI/res/layout/status_bar.xml
+            fi
         ;;
     esac
     . build/envsetup.sh
@@ -206,7 +214,7 @@ function showMenu()
                 esac
                 echo "You choosed $romName, do you want to continue?[Y/n]"
                 read temp
-                if [ $temp != 'Y' ] || [ $temp != 'y' ]
+                if [ -n $temp ] || [ $temp != 'Y' ] || [ $temp != 'y' ]
                 then
                     romType=0
                 fi
@@ -234,7 +242,7 @@ function showMenu()
                 echo "You choosed $romName, do you want to continue?[Y/n]"
                 read temp
                 echo $temp
-                if [ $temp != 'Y' ] || [ $temp != 'y' ]
+                if [ -n $temp ] || [ $temp != 'Y' ] || [ $temp != 'y' ]
                 then
                     romType=0
                 fi
@@ -282,7 +290,7 @@ function showMenu()
                     cp ~/$romName/out/target/product/$codeName/RR-* /var/www/html/
                 ;;
             esac
-                echo "The name of rom is $romName"
+            echo "The name of rom is $romName"
         ;;
         *)
             echo "Error input!!!"
