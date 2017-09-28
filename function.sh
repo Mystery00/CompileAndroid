@@ -277,7 +277,13 @@ function showMenu()
             source build/envsetup.sh
             croot
             echo "Start compile ..."
-            brunch $codeName
+            touch error.log
+            brunch $codeName 2> error.log
+            if [ ! -s error.log ] ; then
+                rm error.log
+            else
+                echo "the error is saved in error.log"
+            fi
         ;;
         '5')
             case $romType in
