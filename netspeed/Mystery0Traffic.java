@@ -144,7 +144,7 @@ public class Mystery0Traffic extends TextView
                 else
                     show_received=DecimalFormalism.format((double) received_speed) + "KB/s ↓";
 
-                setText(show_send + " " + show_received);
+                setText(show_send + "\n" + show_received);
                 update();
                 super.handleMessage(msg);
             }
